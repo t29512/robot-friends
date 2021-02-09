@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Card from './Card';
+import Cardlist from './Cardlist';
 import 'tachyons';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Card />
+    <Cardlist />
   </React.StrictMode>,
   document.getElementById('root')
 );
