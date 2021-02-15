@@ -1,6 +1,5 @@
 import React from 'react';
 import Cardlist from './Cardlist';
-import { robots } from './robots';
 import SearchBox from './SearchBox';
 import './App.css';
 
@@ -9,9 +8,16 @@ class App extends React.Component {
     // use super() in every constructor function
     super();
     this.state = {
-      robots: robots,
+      robots: [],
       searchfield: '',
     };
+  }
+
+  // run after rendering (the App component mounted)
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => this.setState({ robots: users }));
   }
 
   onSearchChange = (event) => {
@@ -26,13 +32,18 @@ class App extends React.Component {
         .toLowerCase()
         .includes(this.state.searchfield.toLowerCase());
     });
-    return (
-      <div className='tc'>
-        <h1 className='f1'>Robofriends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <Cardlist robots={filteredRobots} />
-      </div>
-    );
+    // show loading if haven't got file
+    if (this.state.robots.length === 0) {
+      return <h1>Loading...</h1>;
+    } else {
+      return (
+        <div className='tc'>
+          <h1 className='f1'>Robofriends</h1>
+          <SearchBox searchChange={this.onSearchChange} />
+          <Cardlist robots={filteredRobots} />
+        </div>
+      );
+    }
   }
 }
 
