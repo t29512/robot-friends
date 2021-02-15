@@ -8,6 +8,7 @@ const SearchBox = ({ searchChange }) => {
         placeholder='Search Robot Here'
         className='pa3 ba b--blue bg-light-green'
         onChange={searchChange}
+        style={{ marginBottom: '2rem' }}
       />
     </div>
   );
