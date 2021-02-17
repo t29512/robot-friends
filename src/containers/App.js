@@ -1,8 +1,8 @@
 import React from 'react';
-import Cardlist from './Cardlist';
-import SearchBox from './SearchBox';
+import Cardlist from '../components/Cardlist';
+import SearchBox from '../components/SearchBox';
 import './App.css';
-import Scroll from './Scroll';
+import Scroll from '../components/Scroll';
 
 class App extends React.Component {
   constructor() {
@@ -27,26 +27,23 @@ class App extends React.Component {
   };
 
   render() {
+    const { robots, searchfield } = this.state;
     // filter out robots whoes names include input value
-    let filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name
-        .toLowerCase()
-        .includes(this.state.searchfield.toLowerCase());
+    let filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
-    // show loading if haven't got file
-    if (this.state.robots.length === 0) {
-      return <h1>Loading...</h1>;
-    } else {
-      return (
-        <div className='tc'>
-          <h1 className='f1'>Robofriends</h1>
-          <SearchBox searchChange={this.onSearchChange} />
-          <Scroll>
-            <Cardlist robots={filteredRobots} />
-          </Scroll>
-        </div>
-      );
-    }
+    // show loading if haven't got file yet
+    return !robots.length ? (
+      <h1 className='tc f1'>Loading...</h1>
+    ) : (
+      <div className='tc'>
+        <h1 className='f1'>Robofriends</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <Scroll>
+          <Cardlist robots={filteredRobots} />
+        </Scroll>
+      </div>
+    );
   }
 }
 
