@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Cardlist from '../components/Cardlist';
 import SearchBox from '../components/SearchBox';
 import './App.css';
 import Scroll from '../components/Scroll';
 
-class App extends React.Component {
+//Rewriting with hooks
+const App = () => {
+  const [robots, setRobots] = useState([]);
+  const [searchfield, setSearchfield] = useState('');
+  let filteredRobots = robots.filter((robot) => {
+    return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+  });
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => setRobots(users));
+  }, []);
+  // ↑ The second parameter of useEffect accepts an array of values. It will run useEffect if these values have changed.
+  // useEffect(effect, []) = componentDidMount()
+
+  const onSearchChange = (event) => {
+    setSearchfield(event.target.value);
+  };
+
+  return !robots.length ? (
+    <h1 className='tc f1'>Loading...</h1>
+  ) : (
+    <div className='tc'>
+      <h1 className='f1'>Robofriends</h1>
+      <SearchBox searchChange={onSearchChange} />
+      <Scroll>
+        <Cardlist robots={filteredRobots} />
+      </Scroll>
+    </div>
+  );
+};
+
+/* class App extends React.Component {
   constructor() {
     // use super() in every constructor function
     super();
@@ -45,6 +78,6 @@ class App extends React.Component {
       </div>
     );
   }
-}
+} */
 
 export default App;
